@@ -10,7 +10,6 @@ from tracker import matching
 from utils.kalman_filter import KalmanFilter
 from models.classification.classifier import PatchClassifier
 from models.reid import load_reid_model, extract_reid_features
-from models.bpm.bpm_reid import bpm_reid
 from models.CorrTrack.corr_tracker import CorrTracker
 
 from .basetrack import BaseTrack, TrackState
@@ -193,9 +192,8 @@ class OnlineTracker(object):
         self.use_refind = use_refind
         self.use_tracking = use_tracking
         self.classifier = PatchClassifier()
-        # self.reid_model = load_reid_model()
+        self.reid_model = load_reid_model()
         self.corr_tracker = CorrTracker()
-        self.reid_model = bpm_reid()
         self.frame_id = 0
         self.im0 = None
 
@@ -262,8 +260,8 @@ class OnlineTracker(object):
             tlbrs = np.empty((0, 4))
         tlbrs = self.corr_tracker.predict(image, image, tlbrs)
 
-        # features = extract_reid_features(self.reid_model, image, tlbrs)
-        features = self.reid_model.extract_reid_features(image, tlbrs)
+        features = extract_reid_features(self.reid_model, image, tlbrs)
+        # features = self.reid_model.extract_reid_features(image, tlbrs)
         features = features.cpu().numpy()
         for i, det in enumerate(detections):
             det.set_feature(features[i])

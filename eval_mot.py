@@ -2,7 +2,7 @@ import os
 import cv2
 import logging
 import motmetrics as mm
-from tracker.mot_tracker_cd import OnlineTracker
+from tracker.mot_tracker import OnlineTracker
 
 from datasets.mot_seq import get_loader
 from utils import visualization as vis
@@ -12,7 +12,7 @@ from utils.evaluation import Evaluator
 import os
 import warnings
 warnings.filterwarnings("ignore")
-os.environ['CUDA_VISIBLE_DEVICES']='0'
+os.environ['CUDA_VISIBLE_DEVICES']='2'
 
 def mkdirs(path):
     if os.path.exists(path):
